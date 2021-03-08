@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+  mysql:
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data/:/var/lib/mysql
+      - ./mysql/scripts/:/docker-entrypoint-initdb.d/
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql
+      MYSQL_PASSWORD: root
+    depends_on:
+      - node-mysql
+    networks:
+      - main-network
+
+  node-mysql:
+    container_name: node-mysql
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    volumes:
+        - ./src:/home/node/api
+        - ./src/node_modules:/home/node/api/node_modules
+    ports:
+      - "9090:9090"
+    tty: true
+    stdin_open: true
+    networks:
+      - main-network
+
+networks:
+  main-network:
+        driver: bridge

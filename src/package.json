@@ -1,0 +1,29 @@
+{
+  "name": "nodejs-microservice",
+  "version": "1.0.0",
+  "description": "Running a nodejs application with mysql database as microservices using docker",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaopinacio/docker-node"
+  },
+  "keywords": [
+    "docker",
+    "mysql-docker",
+    "nodejs-docker",
+    "microservice"
+  ],
+  "author": "Joao Pedro <joaopedro.triun@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/joaopinacio/docker-node#readme",
+  "dependencies": {
+    "express": "",
+    "mysql2": "",
+    "sequelize": "",
+    "socket.io": ""
+  }
+}
