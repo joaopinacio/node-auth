@@ -1,4 +1,4 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('mysql', 'root', 'root', {dialect: 'mysql', host: 'mysql'});
+const sequelize = new Sequelize('node-auth', 'root', 'root', {dialect: 'mysql', host: 'mysql-auth'});
 
 module.exports = sequelize;

@@ -11,6 +11,6 @@ var router = require('express').Router();
 })();
 
 // Split up route handling
-router.use('/product', require('./product/ProductDAO.js'));
+router.use('/user', require('./user/UserDAO.js'));
 
 module.exports = router;
