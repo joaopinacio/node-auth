@@ -21,6 +21,7 @@
   "license": "MIT",
   "homepage": "https://github.com/joaopinacio/docker-node#readme",
   "dependencies": {
+    "bcrypt": "",
     "express": "",
     "mysql2": "",
     "sequelize": "",

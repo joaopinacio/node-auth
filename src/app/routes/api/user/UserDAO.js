@@ -1,10 +1,13 @@
 var router = require('express').Router();
 const User = require('../../../model/User.js');
+const bcrypt = require('bcrypt');
+
+var salt = 10;
 
 // Test Get
 router.get('/test', (req, res) => {
 	res.json({
-		success: true,
+		status: true,
 		message: 'Hello world'
 	});
 });
@@ -13,7 +16,7 @@ router.post('/findByPk', async (req, res) => {
 	const user = await User.findByPk(req.body.idUser);
 
 	res.json({
-		success: true,
+		status: true,
 		result: user
 	});
 });
@@ -23,32 +26,48 @@ router.post('/findByWhere', async (req, res) => {
 	const result = await User.findAll({ where: where });
 
 	res.json({
-		success: true,
+		status: true,
 		result: result
 	});
 });
 
 router.post('/create', async (req, res) => {
 	const user = req.body;
-	const result = await User.create({
-		nmUser: user.nmUser,
-		dsLogin: user.dsLogin,
-		dsPassword: user.dsPassword,
-		dsEmail: user.dsEmail,
-		dsAvatar: user.dsAvatar
-	});
 
-	res.json({
-		success: true,
-		result: result
-	});
+    try {
+        const hashedPassword = await bcrypt.hash(user.dsPassword, salt);
+        user.dsPassword = hashedPassword;
+    } catch (error) {
+        res.json({
+            status: true,
+            result: error
+        });
+    }
+
+    User.create({
+        nmUser: user.nmUser,
+        dsLogin: user.dsLogin,
+        dsPassword: user.dsPassword,
+        dsEmail: user.dsEmail,
+        dsAvatar: user.dsAvatar
+    }).then(function(item){
+        res.json({
+            status: true,
+            result: item
+        });
+    }).catch(function (err) {
+        res.json({
+            status: false,
+            result: err
+        });
+    });
 });
 
 router.get('/findAll', async (req, res) => {
 	const users = await User.findAll();
 
 	res.json({
-		success: true,
+		status: true,
 		result: users
 	});
 });
@@ -59,14 +78,14 @@ router.post('/update', async (req, res) => {
 
 	userOld.nmUser = userUpdated.nmUser;
 	userOld.dsLogin = userUpdated.dsLogin;
-	userOld.dsPassoword = userUpdated.dsPassoword;
+	userOld.dsPassword = userUpdated.dsPassword;
 	userOld.dsEmail = userUpdated.dsEmail;
 	userOld.dsAvatar = userUpdated.dsAvatar;
 
 	const result = await userOld.save();
 
 	res.json({
-		success: true,
+		status: true,
 		result: result
 	});
 });
@@ -77,7 +96,7 @@ router.post('/delete', async (req, res) => {
 	const result = await User.destroy({ where: { idUser: user.idUser } });;
 
 	res.json({
-		success: true,
+		status: true,
 		result: result
 	});
 });
