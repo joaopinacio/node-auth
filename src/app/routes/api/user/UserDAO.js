@@ -1,104 +1,150 @@
 var router = require('express').Router();
+const {authorize} = require('../middleware/Middleware.js');
 const User = require('../../../model/User.js');
 const bcrypt = require('bcrypt');
+require('express-group-routes');
 
-var salt = 10;
+const salt = 10;
 
-// Test Get
-router.get('/test', (req, res) => {
-	res.json({
-		status: true,
-		message: 'Hello world'
-	});
-});
+// TODO: Lembrar de tratar body diferenciados (By @Hugo_Mesquita)
 
-router.post('/findByPk', async (req, res) => {
-	const user = await User.findByPk(req.body.idUser);
+router.post('/login', async (req, res) => {
+    const userLogin = req.body;
+    let resultMessage = {};
 
-	res.json({
-		status: true,
-		result: user
-	});
-});
+    const user = await User.findOne({ where: { dsLogin: userLogin.dsLogin } });
 
-router.post('/findByWhere', async (req, res) => {
-	const where = req.body;
-	const result = await User.findAll({ where: where });
+    if(user){
+        try {
+            const resultPass = await bcrypt.compare(userLogin.dsPassword, user.dsPassword);
 
-	res.json({
-		status: true,
-		result: result
-	});
-});
-
-router.post('/create', async (req, res) => {
-	const user = req.body;
-
-    try {
-        const hashedPassword = await bcrypt.hash(user.dsPassword, salt);
-        user.dsPassword = hashedPassword;
-    } catch (error) {
-        res.json({
-            status: true,
-            result: error
-        });
+            if(resultPass){
+                resultMessage = {
+                    status: true,
+                    result: user
+                };
+            }else{
+                resultMessage = {
+                    status: false,
+                    result: "Senha Inválida"
+                };
+            }
+        } catch (error) {
+            resultMessage = {
+                status: false,
+                result: error
+            };
+        }
+    }else{
+        resultMessage = {
+            status: false,
+            result: "Login inválido"
+        }
     }
 
-    User.create({
-        nmUser: user.nmUser,
-        dsLogin: user.dsLogin,
-        dsPassword: user.dsPassword,
-        dsEmail: user.dsEmail,
-        dsAvatar: user.dsAvatar
-    }).then(function(item){
+    return res.json(resultMessage);
+});
+
+router.group((router) => {
+    router.use(authorize);
+
+    // Test Get
+    router.get('/test', (req, res) => {
         res.json({
             status: true,
-            result: item
-        });
-    }).catch(function (err) {
-        res.json({
-            status: false,
-            result: err
+            message: 'Hello world'
         });
     });
-});
 
-router.get('/findAll', async (req, res) => {
-	const users = await User.findAll();
+    router.post('/findByPk', async (req, res) => {
+        const user = await User.findByPk(req.body.idUser);
 
-	res.json({
-		status: true,
-		result: users
-	});
-});
+        res.json({
+            status: true,
+            result: user
+        });
+    });
 
-router.post('/update', async (req, res) => {
-	const userUpdated = req.body;
-	const userOld = await User.findByPk(userUpdated.idUser);
+    router.post('/findByWhere', async (req, res) => {
+        const where = req.body;
+        const result = await User.findAll({ where: where });
 
-	userOld.nmUser = userUpdated.nmUser;
-	userOld.dsLogin = userUpdated.dsLogin;
-	userOld.dsPassword = userUpdated.dsPassword;
-	userOld.dsEmail = userUpdated.dsEmail;
-	userOld.dsAvatar = userUpdated.dsAvatar;
+        res.json({
+            status: true,
+            result: result
+        });
+    });
 
-	const result = await userOld.save();
+    router.post('/create', async (req, res) => {
+        const user = req.body;
 
-	res.json({
-		status: true,
-		result: result
-	});
-});
+        // * Funcao hash para encriptar senha (By @Gabjoa, @ferkarchiloff, @bashrc_ronald)
+        try {
+            const hashedPassword = await bcrypt.hash(user.dsPassword, salt);
+            user.dsPassword = hashedPassword;
+        } catch (error) {
+            return res.json({
+                status: false,
+                result: error
+            });
+        }
 
-router.post('/delete', async (req, res) => {
-	const user = req.body;
+        User.create({
+            nmUser: user.nmUser,
+            dsLogin: user.dsLogin,
+            dsPassword: user.dsPassword,
+            dsEmail: user.dsEmail,
+            dsAvatar: user.dsAvatar
+        }).then(function(item){
+            return res.json({
+                status: true,
+                result: item
+            });
+        }).catch(function (err) {
+            return res.json({
+                status: false,
+                result: err
+            });
+        });
+    });
 
-	const result = await User.destroy({ where: { idUser: user.idUser } });;
+    router.get('/findAll', async (req, res) => {
+        const users = await User.findAll();
 
-	res.json({
-		status: true,
-		result: result
-	});
+        return res.json({
+            status: true,
+            result: users
+        });
+    });
+
+    router.post('/update', async (req, res) => {
+        const userUpdated = req.body;
+        const userOld = await User.findByPk(userUpdated.idUser);
+
+        userOld.nmUser = userUpdated.nmUser;
+        userOld.dsLogin = userUpdated.dsLogin;
+        userOld.dsPassword = userUpdated.dsPassword;
+        userOld.dsEmail = userUpdated.dsEmail;
+        userOld.dsAvatar = userUpdated.dsAvatar;
+
+        const result = await userOld.save();
+
+        return res.json({
+            status: true,
+            result: result
+        });
+    });
+
+    router.post('/delete', async (req, res) => {
+        const user = req.body;
+
+        const result = await User.destroy({ where: { idUser: user.idUser } });;
+
+        return res.json({
+            status: true,
+            result: result
+        });
+    });
 });
 
 module.exports = router;

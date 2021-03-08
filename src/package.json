@@ -23,8 +23,12 @@
   "dependencies": {
     "bcrypt": "",
     "express": "",
+    "express-group-routes": "",
     "mysql2": "",
     "sequelize": "",
     "socket.io": ""
+  },
+  "devDependencies": {
+    "@types/express": ""
   }
 }
