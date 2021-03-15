@@ -1,18 +1,36 @@
 # Instructions
 
-### *In this Project makes you have a Mysql database and a backend in Node.js all in localhost.*  
+### *In this Project makes you have a Mysql database and a backend in Node.js all in localhost.*
 
-## About Node  
-**This backend uses the following libraries:**  
+## About Node
+**This backend uses the following libraries:**
 
-- **Nodemon**  
-To restart the server every time you change a file.  
+- **Nodemon**
+To restart the server every time you change a file.
 
-- **Mysql**  
-To connect to the database.  
+- **Mysql2**
+To connect to the database.
 
-- **Socket.io**  
-To have available functions that let you handle information in real time.  
+- **Socket.io**
+To have available functions that let you handle information in real time.
+
+- **Bcrypt**
+To Encrypt user's password.
+
+- **Cookie-parser**
+To Parse the Cookie header to a json.
+
+- **Express**
+To .
+
+- **Express-group-routes**
+To .
+
+- **Express-session**
+To .
+
+- **Sequelize**
+To .
 
 ## About Database
 See more in: [Docker Mysql](https://hub.docker.com/_/mysql)
@@ -34,7 +52,7 @@ To enter in a Container:
 ```docker exec -it [container-id] bash```
 
 ### Load Dump (Database Scripts)
-Before you turn on your container's: 
+Before you turn on your container's:
 - Delete all files in data directory (./mysql/data)
 - Put your dump file in the folder "scripts" with the name "1-init.sql"
 
@@ -65,11 +83,11 @@ Docker Commands for clean your containers.
 Stop all containers:
 
 ```docker kill $(docker ps -q)```
-    
+
 Remove all containers
 
 ```docker rm $(docker ps -a -q)```
-    
+
 Remove all docker images
 
 ```docker rmi $(docker images -q)```
