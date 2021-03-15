@@ -18,4 +18,7 @@ function sessionChecker (req, res, next) {
     }
 };
 
-module.exports = [authorize, sessionChecker];
+module.exports = {
+                    "auth": authorize,
+                    "sessChecker": sessionChecker
+                };

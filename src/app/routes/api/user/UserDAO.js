@@ -6,7 +6,7 @@ require('express-group-routes');
 // TODO: Lembrar de tratar body diferenciados (By @Hugo_Mesquita)
 router.group("/auth", (router) => {
     // * sessionChecker()
-    router.use(middlewareFunctions[1]);
+    router.use(middlewareFunctions.sessChecker);
 
     router.post('/login', async (req, res) => {
         const userLogin = req.body;
@@ -48,7 +48,7 @@ router.group("/auth", (router) => {
 
 router.group((router) => {
     // * authorize()
-    router.use(middlewareFunctions[0]);
+    router.use(middlewareFunctions.auth);
 
     // Test Get
     router.get('/test', (req, res) => {
@@ -61,13 +61,9 @@ router.group((router) => {
 
     // * req.session.destroy (By @gabigolcorinthiano)
     router.get('/logout', async (req, res) => {
-        if (req.session.user && req.cookies.SessionCookie) {
-            res.clearCookie('SessionCookie');
-            req.session.destroy;
-            res.redirect('/');
-        } else {
-            res.redirect('/loginPage');
-        }
+        res.clearCookie('SessionCookie');
+        req.session.destroy;
+        res.redirect('/');
     });
 
     router.post('/findByPk', async (req, res) => {
