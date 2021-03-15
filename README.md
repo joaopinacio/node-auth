@@ -5,12 +5,6 @@
 ## About Node
 **This backend uses the following libraries:**
 
-- [**Nodemon**](https://www.npmjs.com/package/nodemon)
-
-- [**Mysql2**](https://www.npmjs.com/package/mysql2)
-
-- [**Socket.io**](https://www.npmjs.com/package/socket.io)
-
 - [**Bcrypt**](https://www.npmjs.com/package/bcrypt)
 
 - [**Cookie-parser**](https://www.npmjs.com/package/cookie-parser)
@@ -20,6 +14,12 @@
 - [**Express-group-routes**](https://www.npmjs.com/package/express-group-routes)
 
 - [**Express-session**](https://www.npmjs.com/package/express-session)
+
+- [**Mysql2**](https://www.npmjs.com/package/mysql2)
+
+- [**Nodemon**](https://www.npmjs.com/package/nodemon)
+
+- [**Socket.io**](https://www.npmjs.com/package/socket.io)
 
 - [**Sequelize**](https://www.npmjs.com/package/sequelize)
 
