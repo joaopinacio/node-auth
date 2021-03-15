@@ -26,7 +26,7 @@ router.group("/auth", (router) => {
 
         if(user){
             try {
-                if(user.validPassword(userLogin.dsPassword)){
+                if(await user.validPassword(userLogin.dsPassword)){
                     resultMessage = {
                         status: true,
                         result: user
