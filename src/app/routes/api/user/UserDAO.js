@@ -3,12 +3,22 @@ const middlewareFunctions = require('../middleware/Middleware.js');
 const User = require('../../../model/User.js');
 require('express-group-routes');
 
-// TODO: Lembrar de tratar body diferenciados (By @Hugo_Mesquita)
 router.group("/auth", (router) => {
     // * sessionChecker()
     router.use(middlewareFunctions.sessChecker);
 
-    router.post('/login', async (req, res) => {
+    router.post('/login', middlewareFunctions.validateParams([
+        {
+            paramKey: 'dsLogin',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsPassword',
+            required: true,
+            type: 'string',
+        }
+    ]), async (req, res) => {
         const userLogin = req.body;
         let resultMessage = {};
 
@@ -66,13 +76,26 @@ router.group((router) => {
         res.redirect('/');
     });
 
-    router.post('/findByPk', async (req, res) => {
+    router.post('/findByPk', middlewareFunctions.validateParams([
+        {
+            paramKey: 'idUser',
+            required: true,
+            type: 'number',
+        },
+    ]), async (req, res) => {
         const user = await User.findByPk(req.body.idUser);
 
-        res.json({
-            status: true,
-            result: user
-        });
+        if(user){
+            res.json({
+                status: true,
+                result: user
+            });
+        }else{
+            res.json({
+                status: false,
+                result: "Usuário não encontrado"
+            });
+        }
     });
 
     router.post('/findByWhere', async (req, res) => {
@@ -85,7 +108,33 @@ router.group((router) => {
         });
     });
 
-    router.post('/create', async (req, res) => {
+    router.post('/create', middlewareFunctions.validateParams([
+        {
+            paramKey: 'nmUser',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsLogin',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsPassword',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsEmail',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsAvatar',
+            required: false,
+            type: 'string',
+        }
+    ]), async (req, res) => {
         const user = req.body;
 
         User.create({
@@ -116,25 +165,63 @@ router.group((router) => {
         });
     });
 
-    router.post('/update', async (req, res) => {
+    router.post('/update', middlewareFunctions.validateParams([
+        {
+            paramKey: 'idUser',
+            required: true,
+            type: 'number',
+        },
+        {
+            paramKey: 'nmUser',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsLogin',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsEmail',
+            required: true,
+            type: 'string',
+        },
+        {
+            paramKey: 'dsAvatar',
+            required: false,
+            type: 'string',
+        }
+    ]), async (req, res) => {
         const userUpdated = req.body;
         const userOld = await User.findByPk(userUpdated.idUser);
 
-        userOld.nmUser = userUpdated.nmUser;
-        userOld.dsLogin = userUpdated.dsLogin;
-        userOld.dsPassword = userUpdated.dsPassword;
-        userOld.dsEmail = userUpdated.dsEmail;
-        userOld.dsAvatar = userUpdated.dsAvatar;
+        if(userOld){
+            userOld.nmUser = userUpdated.nmUser;
+            userOld.dsLogin = userUpdated.dsLogin;
+            userOld.dsEmail = userUpdated.dsEmail;
+            userOld.dsAvatar = userUpdated.dsAvatar;
 
-        const result = await userOld.save();
-
-        return res.json({
-            status: true,
-            result: result
-        });
+            const result = await userOld.save();
+            
+            return res.json({
+                status: true,
+                result: result
+            });
+        }else{
+            return res.json({
+                status: false,
+                result: "Usuário não encontrado"
+            });
+        }
     });
 
-    router.post('/delete', async (req, res) => {
+    router.post('/delete', middlewareFunctions.validateParams([
+        {
+            paramKey: 'idUser',
+            required: true,
+            type: 'number',
+        },
+    ]), async (req, res) => {
         const user = req.body;
 
         const result = await User.destroy({ where: { idUser: user.idUser } });;
