@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 // const io = require('socket.io')(http);
 // const Chat = require('./app/event/Chat.js');
 
@@ -18,6 +20,15 @@ http.listen(PORT, HOST, (err) => {
 
 app.use(express.json());							// For parsing application/json
 app.use(express.urlencoded({ extended: true }));	// For parsing application/x-www-form-urlencoded
+app.use(cookieParser());							// For parsing Cookie header and populate req.cookies with an object keyed by the cookie names.
+
+app.use(session({
+    name: 'SessionCookie',
+    secret: 'Shsh!Secret!',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 600000 } // Secure = True para usar o Secure do HTTPS
+}));
 
 // Anything beginning with "/api" will go into this
 app.use('/api', require('./app/routes/api'));

@@ -1,59 +1,73 @@
 var router = require('express').Router();
-const {authorize} = require('../middleware/Middleware.js');
+const middlewareFunctions = require('../middleware/Middleware.js');
 const User = require('../../../model/User.js');
-const bcrypt = require('bcrypt');
 require('express-group-routes');
 
-const salt = 10;
-
 // TODO: Lembrar de tratar body diferenciados (By @Hugo_Mesquita)
+router.group("/auth", (router) => {
+    // * sessionChecker()
+    router.use(middlewareFunctions[1]);
 
-router.post('/login', async (req, res) => {
-    const userLogin = req.body;
-    let resultMessage = {};
+    router.post('/login', async (req, res) => {
+        const userLogin = req.body;
+        let resultMessage = {};
 
-    const user = await User.findOne({ where: { dsLogin: userLogin.dsLogin } });
+        const user = await User.findOne({ where: { dsLogin: userLogin.dsLogin } });
 
-    if(user){
-        try {
-            const resultPass = await bcrypt.compare(userLogin.dsPassword, user.dsPassword);
+        if(user){
+            try {
+                if(user.validPassword(userLogin.dsPassword)){
+                    resultMessage = {
+                        status: true,
+                        result: user
+                    };
 
-            if(resultPass){
-                resultMessage = {
-                    status: true,
-                    result: user
-                };
-            }else{
+                    req.session.user = user.dataValues;
+                }else{
+                    resultMessage = {
+                        status: false,
+                        result: "Senha Inválida"
+                    };
+                }
+            } catch (error) {
                 resultMessage = {
                     status: false,
-                    result: "Senha Inválida"
+                    result: error
                 };
             }
-        } catch (error) {
+        }else{
             resultMessage = {
                 status: false,
-                result: error
-            };
+                result: "Login inválido"
+            }
         }
-    }else{
-        resultMessage = {
-            status: false,
-            result: "Login inválido"
-        }
-    }
 
-    return res.json(resultMessage);
+        return res.json(resultMessage);
+    });
 });
 
 router.group((router) => {
-    router.use(authorize);
+    // * authorize()
+    router.use(middlewareFunctions[0]);
 
     // Test Get
     router.get('/test', (req, res) => {
         res.json({
             status: true,
-            message: 'Hello world'
+            message: 'Hello world',
+            userLogged: req.session.user
         });
+    });
+
+    // * req.session.destroy (By @gabigolcorinthiano)
+    router.get('/logout', async (req, res) => {
+        if (req.session.user && req.cookies.SessionCookie) {
+            res.clearCookie('SessionCookie');
+            req.session.destroy;
+            res.redirect('/');
+        } else {
+            res.redirect('/loginPage');
+        }
     });
 
     router.post('/findByPk', async (req, res) => {
@@ -77,17 +91,6 @@ router.group((router) => {
 
     router.post('/create', async (req, res) => {
         const user = req.body;
-
-        // * Funcao hash para encriptar senha (By @Gabjoa, @ferkarchiloff, @bashrc_ronald)
-        try {
-            const hashedPassword = await bcrypt.hash(user.dsPassword, salt);
-            user.dsPassword = hashedPassword;
-        } catch (error) {
-            return res.json({
-                status: false,
-                result: error
-            });
-        }
 
         User.create({
             nmUser: user.nmUser,

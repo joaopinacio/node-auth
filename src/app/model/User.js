@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-const database = require('../config/db');
+const {sequelizeConnect, Sequelize} = require('../config/db');
+const bcrypt = require('bcrypt');
 
-const User = database.define('user', {
+const User = sequelizeConnect.define('user', {
     idUser: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -34,6 +34,20 @@ const User = database.define('user', {
         type: Sequelize.STRING,
         field: "ds_avatar"
     }
-})
+}, {
+    hooks: {
+        beforeCreate: async function(user) {
+            // * Funcao hash para encriptar senha (By @Gabjoa, @ferkarchiloff, @bashrc_ronald)
+            const salt = bcrypt.genSaltSync();
+            const hashedPassword = await bcrypt.hashSync(user.dsPassword, salt);
+            user.dsPassword = hashedPassword;
+        }
+    }
+});
+
+User.prototype.validPassword = async function (password) {
+    const checkPass = await bcrypt.compareSync(password, this.dsPassword);
+    return checkPass;
+}
 
 module.exports = User;

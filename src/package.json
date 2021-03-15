@@ -22,8 +22,10 @@
   "homepage": "https://github.com/joaopinacio/docker-node#readme",
   "dependencies": {
     "bcrypt": "",
+    "cookie-parser": "",
     "express": "",
     "express-group-routes": "",
+    "express-session": "",
     "mysql2": "",
     "sequelize": "",
     "socket.io": ""
