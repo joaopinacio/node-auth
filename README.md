@@ -5,32 +5,23 @@
 ## About Node
 **This backend uses the following libraries:**
 
-- **Nodemon**
-To restart the server every time you change a file.
+- [**Nodemon**](https://www.npmjs.com/package/nodemon)
 
-- **Mysql2**
-To connect to the database.
+- [**Mysql2**](https://www.npmjs.com/package/mysql2)
 
-- **Socket.io**
-To have available functions that let you handle information in real time.
+- [**Socket.io**](https://www.npmjs.com/package/socket.io)
 
-- **Bcrypt**
-To Encrypt user's password.
+- [**Bcrypt**](https://www.npmjs.com/package/bcrypt)
 
-- **Cookie-parser**
-To Parse the Cookie header to a json.
+- [**Cookie-parser**](https://www.npmjs.com/package/cookie-parser)
 
-- **Express**
-To .
+- [**Express**](https://www.npmjs.com/package/express)
 
-- **Express-group-routes**
-To .
+- [**Express-group-routes**](https://www.npmjs.com/package/express-group-routes)
 
-- **Express-session**
-To .
+- [**Express-session**](https://www.npmjs.com/package/express-session)
 
-- **Sequelize**
-To .
+- [**Sequelize**](https://www.npmjs.com/package/sequelize)
 
 ## About Database
 See more in: [Docker Mysql](https://hub.docker.com/_/mysql)
