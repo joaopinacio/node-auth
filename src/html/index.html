@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="style.css">
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/loadingio/ldbutton@v1.0.1/dist/ldbtn.min.css"/> -->
+        <title>Sign-in & Sign-up</title>
+    </head>
+    <body>
+        <section class="container">
+            <div class="forms-section">
+                <div class="forms">
+                    <form action="#" class="sign-in-form">
+                        <h2 class="title">Sign-in</h2>
+                        <div class="field">
+                            <i class="fas fa-user"></i>
+                            <input type="text" placeholder="Username">
+                            <span class="focus-border">
+                                <i></i>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" placeholder="Password">
+                        </div>
+
+                        <button class="button" id="btnSignIn">
+                            <span>Log-in</span>
+                        </button>
+
+                        <p class="social-text">Or Sign in with social platforms</p>
+                        <div class="social-media">
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </form>
+                    <form action="#" class="sign-up-form">
+                        <h2 class="title">Sign-up</h2>
+                        <div class="field">
+                            <i class="fas fa-user"></i>
+                            <input type="text" placeholder="Username">
+                        </div>
+                        <div class="field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" placeholder="Email">
+                        </div>
+                        <div class="field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" placeholder="Password">
+                        </div>
+
+                        <button class="button" id="btnSignUp">
+                            <span>Sign-up</span>
+                        </button>
+
+                        <p class="social-text">Or Sign up with social platforms</p>
+                        <div class="social-media">
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a href="#" class="social-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="panels-container">
+                <div class="panel left-panel">
+                    <div class="content">
+                        <h3>New here ?</h3>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+                            ex ratione. Aliquid!
+                        </p>
+                        <button class="button transparent" id="btnSignUpPanel">
+                            Sign up
+                        </button>
+                    </div>
+                    <img src="assets/log.svg" class="image" alt="" />
+                </div>
+                <div class="panel right-panel">
+                    <div class="content">
+                        <h3>One of us ?</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+                            laboriosam ad deleniti.
+                        </p>
+                        <button class="button transparent" id="btnSignInPanel">
+                            Sign in
+                        </button>
+                        </div>
+                        <img src="assets/register.svg" class="image" alt="" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script src="index.js"></script>
+    </body>
+</html>
