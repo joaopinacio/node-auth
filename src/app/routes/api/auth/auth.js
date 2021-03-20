@@ -27,12 +27,8 @@ router.group((router) => {
         if(user){
             try {
                 if(await user.validPassword(userLogin.dsPassword)){
-                    resultMessage = {
-                        status: true,
-                        result: user
-                    };
-
                     req.session.user = user.dataValues;
+                    return res.redirect('/home');
                 }else{
                     resultMessage = {
                         status: false,

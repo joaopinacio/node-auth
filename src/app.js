@@ -47,6 +47,10 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/html/index.html');
 });
 
+app.get('/home', function(req, res){
+	res.sendFile(__dirname + '/html/index.html');
+});
+
 // Test
 app.get('/test', function(req, res){
 	res.sendFile(__dirname + '/html/test/index.html');

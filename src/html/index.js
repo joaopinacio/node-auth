@@ -12,22 +12,30 @@ $(document).ready(function () {
     $("#btnSignIn").click(function (e) {
         e.preventDefault();
         $("#btnSignIn").addClass('btn-loading');
-        $("#btnSignIn").attr('disabled', '');
 
-        setTimeout(() => {
+        let data = {
+            "dsLogin": $('#dsLogin').val(),
+            "dsPassword": $('#dsPassword').val(),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: window.location.origin + "/api/auth/login",
+            data: data,
+            success: function (response) {
+                console.log(response);
+            }
+        }).always(function (response){
             $("#btnSignIn").removeClass('btn-loading');
-            $("#btnSignIn").removeAttr('disabled', '');
-        }, 3000);
+        });
     });
 
     $("#btnSignUp").click(function (e) {
         e.preventDefault();
         $("#btnSignUp").addClass('btn-loading');
-        $("#btnSignUp").attr('disabled', '');
 
         setTimeout(() => {
             $("#btnSignUp").removeClass('btn-loading');
-            $("#btnSignUp").removeAttr('disabled', '');
         }, 3000);
     });
 
