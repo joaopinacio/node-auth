@@ -4,7 +4,7 @@ const errorResponse = (message, statusCode = httpStatus.BAD_REQUEST) => defaultR
 
 class UsersController {
     constructor(Users) {
-        this.Users = Users
+        this.Users = Users;
     }
 
     getAll() {

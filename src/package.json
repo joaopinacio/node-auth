@@ -23,6 +23,7 @@
   "dependencies": {
     "bcrypt": "",
     "cookie-parser": "",
+    "cors": "",
     "express": "",
     "express-group-routes": "",
     "express-session": "",

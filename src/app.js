@@ -3,12 +3,19 @@ const app = express();
 const http = require('http').Server(app);
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cors = require('cors');
 // const io = require('socket.io')(http);
 // const Chat = require('./app/event/Chat.js');
 
 // Environment variables
 const PORT = process.env.PORT || 9090;
 const HOST = process.env.HOST || '0.0.0.0';
+
+const corsOpts = {
+	origin: '*',
+	methods: ['GET', 'POST'],
+	allowedHeaders: ['Content-Type', 'Accept', 'Authorization']
+}
 
 http.listen(PORT, HOST, (err) => {
 	if (err) {
@@ -22,6 +29,7 @@ app.use(express.json());							// For parsing application/json
 app.use(express.urlencoded({ extended: true }));	// For parsing application/x-www-form-urlencoded
 app.use(cookieParser());							// For parsing Cookie header and populate req.cookies with an object keyed by the cookie names.
 app.use(express.static(__dirname + '/html'));       // For let the HTML pages public
+app.use(cors(corsOpts));       						// For fixing CORS Problems
 
 app.use(session({
     name: 'SessionCookie',
