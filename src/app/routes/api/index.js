@@ -19,5 +19,6 @@ router.use((req, res, next) => {
 
 // Split up route handling
 router.use('/user', require('./user/UserDAO.js'));
+router.use('/auth', require('./auth/auth.js'));
 
 module.exports = router;

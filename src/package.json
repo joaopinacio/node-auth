@@ -26,6 +26,7 @@
     "express": "",
     "express-group-routes": "",
     "express-session": "",
+    "http-status": "",
     "mysql2": "",
     "sequelize": "",
     "socket.io": ""

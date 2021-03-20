@@ -34,7 +34,12 @@ app.use(session({
 // Anything beginning with "/api" will go into this
 app.use('/api', require('./app/routes/api'));
 
-// Test
+// Login
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/html/index.html');
+});
+
+// Test
+app.get('/test', function(req, res){
+	res.sendFile(__dirname + '/html/test/index.html');
 });
