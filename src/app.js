@@ -21,6 +21,7 @@ http.listen(PORT, HOST, (err) => {
 app.use(express.json());							// For parsing application/json
 app.use(express.urlencoded({ extended: true }));	// For parsing application/x-www-form-urlencoded
 app.use(cookieParser());							// For parsing Cookie header and populate req.cookies with an object keyed by the cookie names.
+app.use(express.static(__dirname + '/html'));       // For let the HTML pages public
 
 app.use(session({
     name: 'SessionCookie',
@@ -34,6 +35,6 @@ app.use(session({
 app.use('/api', require('./app/routes/api'));
 
 // Test
-// app.get('/', function(req, res){
-// 	res.sendFile(__dirname + '/html/index.html');
-// });
+app.get('/', function(req, res){
+	res.sendFile(__dirname + '/html/index.html');
+});
